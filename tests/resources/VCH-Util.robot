@@ -431,9 +431,10 @@ Install VIC with version to Test Server
     [Arguments]  ${version}=7315  ${insecureregistry}=
     Log To Console  \nDownloading vic ${version} from gcp...
     ${rc}  ${output}=  Run And Return Rc And Output  wget https://storage.googleapis.com/vic-engine-builds/vic_${version}.tar.gz -O vic_${version}.tar.gz
-    ${rc}  ${output}=  Run And Return Rc And Output  tar zxvf vic_${version}.tar.gz
+    Create Directory  vic_${version}
+    ${rc}  ${output}=  Run And Return Rc And Output  tar zxvf vic_${version}.tar.gz -C vic_${version}
     Set Environment Variable  TEST_TIMEOUT  20m0s
-    Install VIC Appliance To Test Server  vic-machine=./vic/vic-machine-linux  appliance-iso=./vic/appliance.iso  bootstrap-iso=./vic/bootstrap.iso  certs=${false}  vol=default ${insecureregistry}
+    Install VIC Appliance To Test Server  vic-machine=./vic_${version}/vic/vic-machine-linux  appliance-iso=./vic_${version}/vic/appliance.iso  bootstrap-iso=./vic_${version}/vic/bootstrap.iso  certs=${false}  vol=default ${insecureregistry}
 
     Set Environment Variable  VIC-ADMIN  %{VCH-IP}:2378
     Set Environment Variable  INITIAL-VERSION  ${version}
