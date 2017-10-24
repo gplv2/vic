@@ -22,6 +22,7 @@ dpkg -l > package.list
 
 
 buildinfo=$(drone build info vmware/vic $DRONE_BUILD_NUMBER)
+export GOVC_TLS_HANDSHAKE_TIMEOUT=30s
 
 if [[ $DRONE_BRANCH == "master" || $DRONE_BRANCH == "releases/"* ]] && [[ $DRONE_REPO == "vmware/vic" ]] && [[ $DRONE_BUILD_EVENT == "push" ]]; then
     echo "Running full CI for $DRONE_BUILD_EVENT on $DRONE_BRANCH"
