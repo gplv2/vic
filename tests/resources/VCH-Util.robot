@@ -322,7 +322,8 @@ Run Secret VIC Machine Inspect Command
 
 Run VIC Machine Delete Command
     ${rc}  ${output}=  Run Secret VIC Machine Delete Command  %{VCH-NAME}
-    Wait Until Keyword Succeeds  6x  5s  Check Delete Success  %{VCH-NAME}
+    ${status}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  6x  5s  Check Delete Success  %{VCH-NAME}
+    Run Keyword Unless  ${status}  Fatal Error  vic-machine delete has failed to remove the VCH: %{VCH-NAME} as expected
     Should Be Equal As Integers  ${rc}  0
     Should Contain  ${output}  Completed successfully
     ${output}=  Run  rm -rf %{VCH-NAME}
