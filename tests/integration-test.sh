@@ -31,7 +31,7 @@ if [[ $DRONE_BRANCH == "master" || $DRONE_BRANCH == "releases/"* ]] && [[ $DRONE
 elif [[ $DRONE_BRANCH == *"refs/tags"* ]] && [[ $DRONE_REPO == "vmware/vic" ]] && [[ $DRONE_BUILD_EVENT == "tag" ]]; then
     echo "Running only Group11-Upgrade and 7-01-Regression for $DRONE_BUILD_EVENT on $DRONE_BRANCH"
     pybot --removekeywords TAG:secret --suite Group11-Upgrade --suite 7-01-Regression tests/test-cases
-elif grep -q "\[full ci\]" <$prBody; then
+elif (echo $prBody | grep -q "\[full ci\]"); then
     echo "Running full CI as per commit message"
     pybot --removekeywords TAG:secret --exclude skip tests/test-cases
 elif (echo $prBody | grep -q "\[specific ci="); then
