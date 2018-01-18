@@ -323,7 +323,7 @@ Run Secret VIC Machine Inspect Command
 Run VIC Machine Delete Command
     ${rc}  ${output}=  Run Secret VIC Machine Delete Command  %{VCH-NAME}
     ${status}=  Run Keyword And Return Status  Wait Until Keyword Succeeds  6x  5s  Check Delete Success  %{VCH-NAME}
-    Run Keyword Unless  ${status}  Fatal Error  vic-machine delete has failed to remove the VCH: %{VCH-NAME} as expected
+    Run Keyword Unless  ${status}  Conditional Fatal Error  vic-machine delete has failed to remove the VCH: %{VCH-NAME} as expected
     Should Be Equal As Integers  ${rc}  0
     Should Contain  ${output}  Completed successfully
     ${output}=  Run  rm -rf %{VCH-NAME}
@@ -643,3 +643,7 @@ Enable VCH SSH
     ${rc}  ${output}=  Run And Return Rc And Output  ${vic-machine} debug --rootpw ${rootpw} --target ${target} --password ${password} --thumbprint ${thumbprint} --name ${name} --user ${user} --compute-resource ${resource} --enable-ssh
     Should Be Equal As Integers  ${rc}  0
     Should Contain  ${output}  Completed successfully
+
+Conditional Fatal Error
+    [Arguments]  ${msg}
+    Run Keyword If  %{FAST_FAILURE}  Fatal Error  ${msg}
