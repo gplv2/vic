@@ -49,6 +49,8 @@ pipeline:
       BIN: bin
       GOPATH: /go
       SHELL: /bin/bash
+      DRONE_SERVER:  ${DRONE_SERVER}
+      DRONE_TOKEN:  ${DRONE_TOKEN}
       TEST_URL_ARRAY:  ${TEST_URL_ARRAY}
       TEST_USERNAME:  ${TEST_USERNAME}
       TEST_PASSWORD:  ${TEST_PASSWORD}
