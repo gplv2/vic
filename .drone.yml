@@ -64,7 +64,7 @@ pipeline:
       - echo `ls vendor/github.com/vmware/govmomi/vim25/types`
       - echo `ls vendor/github.com/docker/docker/vendor/github.com/opencontainers/runc/libcontainer/system`
       - export VIC_ESX_URL_ARRAY="`tests/get_test_url.sh`"
-      - /bin/bash if ! grep -q "\[skip unit\]" <(drone build info vmware/vic $DRONE_BUILD_NUMBER); then make test
+      - tests/unit-test-check.sh
       - make sincemark
     when:
       status:  success
