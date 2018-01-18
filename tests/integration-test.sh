@@ -25,6 +25,12 @@ buildinfo=$(drone build info vmware/vic $DRONE_BUILD_NUMBER)
 prNumber=$(drone build info --format "{{ .Ref }}" vmware/vic $DRONE_BUILD_NUMBER | cut -f 3 -d'/')
 prBody=$(curl https://api.github.com/repos/vmware/vic/pulls/$prNumber | jq -r ".body")
 
+if (echo $prBody | grep -q "\[fast fail\]"); then
+    export FAST_FAILURE=1
+else
+    export FAST_FAILURE=0
+fi
+
 if [[ $DRONE_BRANCH == "master" || $DRONE_BRANCH == "releases/"* ]] && [[ $DRONE_REPO == "vmware/vic" ]] && [[ $DRONE_BUILD_EVENT == "push" ]]; then
     echo "Running full CI for $DRONE_BUILD_EVENT on $DRONE_BRANCH"
     pybot --removekeywords TAG:secret --exclude skip tests/test-cases
